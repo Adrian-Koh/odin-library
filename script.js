@@ -45,14 +45,48 @@ function displayBooks() {
         author.innerText = book.author;
         pages.innerText = book.pages;
         
+        const removeButton = document.createElement('button');
+        removeButton.id = 'remove-button';
+        removeButton.innerText = 'Remove book';
+        removeButton.bookId = book.id;
+        removeButton.addEventListener('click', () => {
+            let removeIndex = 0;
+
+            for (let i = 0; i < myLibrary.length; i++) {
+                if (myLibrary[i].id === book.id) {
+                    removeIndex = i;
+                    break;
+                }
+            }
+
+            myLibrary.splice(removeIndex, 1);
+            displayBooks();
+        });
+
         div.appendChild(title);
         div.appendChild(author);
         div.appendChild(pages);
+        div.appendChild(removeButton);
         div.id = 'book';
+
 
         booksContainer.append(div);
     }
 }
+
+// function removeBook(id) {
+//     let removeIndex = 0;
+
+//     for (let i = 0; i < myLibrary.length; i++) {
+//         if (id === book.id) {
+//             removeIndex = i;
+//             break;
+//         }
+//     }
+
+//     myLibrary.splice(removeIndex, 1);
+//     displayBooks();
+// }
 
 
 newBookBtn.addEventListener('click', () => {
@@ -74,7 +108,6 @@ submit.addEventListener('click', () => {
 
     body.removeChild(form);
     body.prepend(newBookBtn);
-
 });
 
 body.removeChild(form);
