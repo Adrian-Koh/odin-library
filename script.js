@@ -1,5 +1,9 @@
 const myLibrary = [];
-
+const body = document.querySelector('body');
+const form = document.querySelector('form');
+const booksContainer = document.querySelector('#books-container');
+const submit = document.querySelector('#submit');
+const newBookBtn = document.querySelector('#new-book');
 
 function Book(title, author, pages) {
     this.id = crypto.randomUUID();
@@ -15,8 +19,7 @@ function addBookToLibrary(title, author, pages) {
 }
 
 function displayBooks() {
-    const body = document.querySelector('body');
-
+    booksContainer.innerHTML = '';
     for (const book of myLibrary) {
         const div = document.createElement('div');
         const title = document.createElement('p');
@@ -30,11 +33,31 @@ function displayBooks() {
         div.appendChild(title);
         div.appendChild(author);
         div.appendChild(pages);
+        div.id = 'book';
 
-        body.append(div);
+        booksContainer.append(div);
     }
 }
 
+
+newBookBtn.addEventListener('click', () => {
+    body.prepend(form);
+    body.removeChild(newBookBtn);
+});
+
+submit.addEventListener('click', () => {
+    const title = document.querySelector('#title').value;
+    const author = document.querySelector('#author').value;
+    const pages = document.querySelector('#pages').value;
+    
+    addBookToLibrary(title, author, pages);
+    displayBooks();
+
+    body.removeChild(form);
+    body.prepend(newBookBtn);
+});
+
+body.removeChild(form);
 
 addBookToLibrary('Harry Potter', 'J.K Rowling', 295);
 addBookToLibrary('The Art of War', 'Sun Tzu', 1020);
