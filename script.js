@@ -48,9 +48,14 @@ function displayBooks() {
         const pages = document.createElement('span');
         const read = document.createElement('span');
 
-        title.innerText = book.title;
-        author.innerText = book.author;
-        pages.innerText = book.pages;
+        title.id = 'book-title';
+        author.id = 'book-author';
+        pages.id = 'book-pages';
+        read.id = 'book-read';
+
+        title.innerText = "\"" + book.title + "\"";
+        author.innerText = "by " + book.author;
+        pages.innerText = book.pages + " pages";
         read.innerText = book.read ? "Already read" : "Not read yet";
         
         const removeButton = document.createElement('button');
