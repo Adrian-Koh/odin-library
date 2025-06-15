@@ -5,18 +5,20 @@ const booksContainer = document.querySelector('#books-container');
 const submit = document.querySelector('#submit');
 const newBookBtn = document.querySelector('#new-book');
 
-function Book(title, author, pages, read) {
-    this.id = crypto.randomUUID();
+class Book {
+    constructor(title, author, pages, read) {
+        this.id = crypto.randomUUID();
 
-    this.title = title;
-    this.author = author;
-    this.pages = pages;
-    this.read = read;
-}
+        this.title = title;
+        this.author = author;
+        this.pages = pages;
+        this.read = read;
+    }
 
-Book.prototype.ToggleRead = function() {
+    ToggleRead() {
         this.read = !this.read;
     }
+}
 
 function addBookToLibrary(title, author, pages, read) {
     if (title.length === 0) {
