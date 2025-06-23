@@ -21,21 +21,6 @@ class Book {
 }
 
 function addBookToLibrary(title, author, pages, read) {
-    if (title.length === 0) {
-        alert('Title is empty, unable to add book.');
-        return;
-    }
-        
-    if (author.length === 0) {
-        alert('Author is empty, unable to add book.');
-        return;
-    }
-        
-    if (!pages) {
-        alert('Invalid pages value, unable to add book.');
-        return;
-    }
-
     let book = new Book(title, author, pages, read);
     myLibrary.push(book);
 }
@@ -104,24 +89,63 @@ newBookBtn.addEventListener('click', () => {
 });
 
 submit.addEventListener('click', () => {
-    const title = document.querySelector('#title').value;
-    const author = document.querySelector('#author').value;
-    const pages = document.querySelector('#pages').value;
-    const read = document.querySelector('#read').checked;
-    
-    document.querySelector('#title').value = '';
-    document.querySelector('#author').value = '';
-    document.querySelector('#pages').value = '';
-    document.querySelector('#read').checked = false;
+    const read = document.querySelector('#read');
 
-    addBookToLibrary(title, author, pages, read);
+    if (!setValidityMessage(title, 'Title'))
+        return;
+    if (!setValidityMessage(author, 'Author'))
+        return;
+    if (!setValidityMessage(pages, 'Pages'))
+        return;
+    
+    addBookToLibrary(title.value, author.value, pages.value, read.checked);
     displayBooks();
+
+    title.value = '';
+    author.value = '';
+    pages.value = '';
+    read.checked = false;
 
     body.removeChild(form);
     body.prepend(newBookBtn);
 });
 
 body.removeChild(form);
+
+function setValidityMessage(item, label) {
+    if (item.validity.tooShort) {
+        item.setCustomValidity(`${label} is too short. Please enter a valid value between 8 and 50 characters.`);
+        return false;
+    }
+    else if (item.validity.rangeUnderflow) {
+        item.setCustomValidity(`${label} is too small. Please enter a valid value between 20 and 10000.`);
+        return false;
+    }
+    else if (item.validity.rangeOverflow) {
+        item.setCustomValidity(`${label} is too large. Please enter a valid value between 20 and 10000.`);
+        return false;
+    }
+    else {
+        item.setCustomValidity("");
+        return true;
+    }
+}
+
+const title = form.querySelector('#title');
+title.addEventListener('input', () => {
+    setValidityMessage(title, 'Title');
+});
+
+const author = form.querySelector('#author');
+author.addEventListener('input', () => {
+    setValidityMessage(author, 'Author');
+});
+
+const pages = form.querySelector('#pages');
+pages.addEventListener('input', () => {
+    setValidityMessage(pages, 'Pages');
+});
+
 
 addBookToLibrary('Harry Potter', 'J.K Rowling', 295, true);
 addBookToLibrary('The Art of War', 'Sun Tzu', 1020, false);
